@@ -1,0 +1,52 @@
+*{
+  @import url('http://fonts.cdnfonts.com/css/gilroy-bold');  
+  font-family: 'Gilroy-Regular', sans-serif;
+}
+
+.center-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-form{ 
+  width: 50%;
+}
+
+.card-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.img-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.card.img{
+  display: flex;
+  height:100px;
+  width: 100px;
+}
+
+.StyledPaper::-webkit-scrollbar{
+  display: none;
+}
+
+.side-nav{
+  border-radius: 0px 40px 40px 0px;
+}
+
+.nav-link{
+  font-size: 1.25rem;
+  color: black;
+}
+
+.logoutButton{
+  /* display: flex;
+  align-items: flex-end; */
+  margin-left: auto;
+  margin-top: auto;
+}
