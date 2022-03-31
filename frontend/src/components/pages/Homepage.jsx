@@ -5,7 +5,7 @@ import InfoDialog from '../InfoDialog';
 import CompanyNews from '../../utils/images/CompanyNews.png';
 import HomepageCard from '../HomepageCard';
 import BookingList from '../BookingList';
-import NotFound from '../NotFound'
+import NotFound from '../NotFound';
 import axios from 'axios';
 import PageHeader from '../PageHeader'
 

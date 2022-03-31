@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PageHeader from '../PageHeader'
-import {Box, Stack, InputAdornment, TextField, Select, MenuItem, FormControl, InputLabel  } from '@mui/material';
+import {Box, Stack, InputAdornment, TextField, Select, MenuItem, FormControl, InputLabel, FormControlLabel, Checkbox, Button} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import Dropdown from '../Dropdown';
 
@@ -61,6 +61,11 @@ export default function FindACourse(){
                     value={deliveryMethod}
                     setValue={setDeliveryMethod}
                     values={deliveryMethods}/>
+            </Stack>
+            <Stack direction="row" spacing={6}  sx={{marginTop:2}}>
+                <FormControlLabel control={<Checkbox defaultChecked />} label="Hide courses with no available sessions" />
+                <FormControlLabel control={<Checkbox defaultChecked />} label="Hide your previously completed courses" />
+                <Button color="secondary" variant="contained">No filters applied</Button>
             </Stack>
         </Box>
     )

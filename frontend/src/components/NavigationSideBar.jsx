@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, Typography, Stack, Divider, Avatar, InputAdornment, TextField, IconButton} from '@mui/material';
+import {Box, Stack, Divider, Avatar, InputAdornment, TextField, IconButton, Link, ListItemIcon, ListItemText, ListItemButton, List, Collapse, ListItem} from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -10,13 +10,19 @@ import TuneIcon from '@mui/icons-material/Tune';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SearchIcon from '@mui/icons-material/Search';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import NavLink from './NavLink'
+import NavLink from './NavLink';
 import { useGoogleLogout } from 'react-google-login';
+import {useNavigate} from 'react-router-dom';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 
 const clientId = "945406263981-q6r8d575nd6orns70p25s95l92odtrrq.apps.googleusercontent.com"
 
 export default function NavigationSideBar(props){
     const [user, setUser] = useState();
+    const [managerListOpen, setManagerListOpen] = useState(false);
+    const [adminListOpen, setAdminListOpen] = useState(false);
+    const navigate = useNavigate();
 
     const onLogoutSuccess = (res) => {
         setUser(null);
@@ -45,20 +51,34 @@ export default function NavigationSideBar(props){
         console.log(user);
     }, [user])
 
+    const handleClick = () => {
+        setManagerListOpen(!managerListOpen);
+      };
+
+      const handleAdminClick = () => {
+        setAdminListOpen(!adminListOpen);
+      };
+
     return(
         <Stack direction="row" minWidth="340px" sx={{backgroundColor:'#F4F5F6'}}>
             <Box sx={{height:'100%' ,width:'80px', backgroundColor:'#1B838B'}} className="side-nav">
                 {!user ? 
                     <IconButton onClick={() => {console.log("Testing")}}><Avatar sx={{margin:'8px 8px 24px 8px'}}/></IconButton>: 
-                    <IconButton onClick={() => {console.log(user.givenName)}}><Avatar src={user.imageUrl}  sx={{margin:'8px 8px 24px 8px'}}/></IconButton>
+                    <IconButton onClick={() => {navigate("/record/"+user.googleId)}}><Avatar src={user.imageUrl}  sx={{margin:'8px 8px 24px 8px'}}/></IconButton>
                 }
                 
             </Box>
             <Box sx={{width:'100%', paddingLeft:2,  paddingRight:2,  paddingTop:2}}>
-                <Stack direction="row" spacing={2}>
-                    <CalendarMonthIcon />
-                    <Typography variant="h6">I-Learn</Typography>
-                </Stack>
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    }}>
+                    <IconButton onClick={() => {navigate("/")}}>        
+                        <CalendarMonthIcon  />
+                    </IconButton>
+                    <Link href="/" underline="none" lineHeight="1.6" sx={{color:'#000000', fontSize:'1.25rem'}}>I-Learn</Link>
+                </div>
 
                 <Divider />
 
@@ -91,7 +111,7 @@ export default function NavigationSideBar(props){
                         flexWrap: 'wrap',
                     }}>
                         <CalendarMonthIcon style={{marginRight:'1rem'}}/>
-                        <NavLink href="#" text="Find A Course"/>
+                        <NavLink href="/courses/find" text="Find A Course"/>
                     </div>
                     <div style={{
                             display: 'flex',
@@ -117,22 +137,75 @@ export default function NavigationSideBar(props){
                         <InfoIcon style={{marginRight:'1rem'}}/>
                         <NavLink href="#" text="About L&D"/>
                     </div>
-                    <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            flexWrap: 'wrap',
-                        }}>
-                        <GroupIcon style={{marginRight:'1rem'}}/>
-                        <NavLink href="#" text="Manager Tools"/>
-                    </div>
-                    <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            flexWrap: 'wrap',
-                        }}>
-                        <TuneIcon style={{marginRight:'1rem'}}/>
-                        <NavLink href="#" text="Admin Tools"/>
-                    </div>
+
+                    <List sx={{width:'100%'}}>
+                        <ListItem sx={{padding:0}}>
+                            <ListItemButton sx={{padding:0}} onClick={handleClick}>  
+                                <ListItemIcon sx={{marginRight:'1em', minWidth:0}}>
+                                    <GroupIcon />
+                                </ListItemIcon>
+                                <ListItemText primaryTypographyProps={{fontSize: '1.1rem'}}  primary="Manager Tools" />
+                                {managerListOpen ? <ExpandLess /> : <ExpandMore />}
+                            </ListItemButton>
+                            </ListItem>
+                            <Collapse in={managerListOpen} timeout="auto" unmountOnExit>
+                                <List component="div" disablePadding>
+                                <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemText primary="My Team's Bookings" sx={{marginLeft:'1em'}}/>
+                                </ListItemButton>
+                                <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemText primary="My Team's Records" sx={{marginLeft:'1em'}}/>
+                                </ListItemButton>
+                                <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemText primary="Make A Team Booking" sx={{marginLeft:'1em'}}/>
+                                </ListItemButton>
+                                </List>
+                            </Collapse>
+                        </List>
+
+                        <List sx={{width:'100%'}}>
+                        <ListItem sx={{padding:0}}>
+                            <ListItemButton sx={{padding:0}} onClick={handleAdminClick}>  
+                                <ListItemIcon sx={{marginRight:'1em', minWidth:0}}>
+                                    <TuneIcon />
+                                </ListItemIcon>
+                                <ListItemText primaryTypographyProps={{fontSize: '1.1rem'}}  primary="Admin Tools" />
+                                {adminListOpen ? <ExpandLess /> : <ExpandMore />}
+                            </ListItemButton>
+                            </ListItem>
+                            <Collapse in={adminListOpen} timeout="auto" unmountOnExit>
+                                <List component="div" disablePadding>
+                                <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemText primary="Dashboard" sx={{marginLeft:'1em'}}/>
+                                </ListItemButton>
+                                <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemText primary="Pending Bookings" sx={{marginLeft:'1em'}}/>
+                                </ListItemButton>
+                                <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemText primary="Cancellations" sx={{marginLeft:'1em'}}/>
+                                </ListItemButton>
+                                <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemText primary="Session Schedule" sx={{marginLeft:'1em'}}/>
+                                </ListItemButton>
+                                <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemText primary="Past Sessions" sx={{marginLeft:'1em'}}/>
+                                </ListItemButton>
+                                <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemText primary="Courses" sx={{marginLeft:'1em'}}/>
+                                </ListItemButton>
+                                <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemText primary="Learning Pathways" sx={{marginLeft:'1em'}}/>
+                                </ListItemButton>
+                                <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemText primary="Training Matrix" sx={{marginLeft:'1em'}}/>
+                                </ListItemButton>
+                                <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemText primary="User Management" sx={{marginLeft:'1em'}}/>
+                                </ListItemButton>
+                                </List>
+                            </Collapse>
+                        </List>
+
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',

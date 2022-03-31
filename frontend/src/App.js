@@ -10,7 +10,12 @@ import {useState} from 'react';
 import React, {useRef} from 'react';
 import Homepage from './components/pages/Homepage';
 import FindACourse from './components/pages/FindACourse';
+import LearningRecord from './components/pages/LearningRecord'
 import Stack from '@mui/material/Stack';
+import {
+  Routes,
+  Route
+} from 'react-router-dom';
 
 
 function App() {
@@ -20,16 +25,16 @@ function App() {
   return (
       <Box sx={{width:'100%', height:'100vh'}} >
           {!user? <LoginPage setUser={setUser}/> : 
-          <Stack direction="row">
+          <Stack direction="row"> 
             <NavigationSideBar user={user} setUser={setUser}/>
-            {/* <Homepage/> */}
-            <FindACourse/>
+              <Routes>
+                <Route path='/' element={<Homepage/>} />
+                <Route path='/courses/find' element={<FindACourse/>} />
+                <Route path='/record/:id' element={<LearningRecord user={user}/>} />
+              </Routes>
           </Stack>
           
             }
-        <Container maxWidth="xl">
-          
-        </Container>
       </Box>
   );
 }

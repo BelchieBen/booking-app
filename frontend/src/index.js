@@ -3,13 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import RegisterPage from './components/pages/RegisterPage.jsx'
-import LoginPage from './components/pages/LoginPage.jsx'
-import {
-  BrowserRouter,
-  Routes,
-  Route
-} from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
+
 import {ThemeProvider, createTheme} from '@mui/material';
 
 // This theme doesnt work for some reason
@@ -30,13 +25,9 @@ const theme = createTheme({
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<App/>} />
-        <Route path='/register' element={<RegisterPage />} /> 
-        <Route path='/login' element={<LoginPage />} /> 
-      </Routes>
-      </BrowserRouter>,
-    </ThemeProvider>,
+      <App />,
+    </BrowserRouter>,
+  </ThemeProvider>,
   document.getElementById('root')
 );
 
