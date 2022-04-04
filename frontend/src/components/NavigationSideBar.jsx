@@ -59,6 +59,10 @@ export default function NavigationSideBar(props){
         setAdminListOpen(!adminListOpen);
       };
 
+      const handleNavigate = (url) => {
+          navigate(url);
+      }
+
     return(
         <Stack direction="row" minWidth="340px" sx={{backgroundColor:'#F4F5F6'}}>
             <Box sx={{height:'100%' ,width:'80px', backgroundColor:'#1B838B'}} className="side-nav">
@@ -82,7 +86,7 @@ export default function NavigationSideBar(props){
 
                 <Divider />
 
-                <Stack spacing={2}>
+                <Stack>
                     <TextField
                         varient="outlined"
                         size="small"
@@ -97,48 +101,52 @@ export default function NavigationSideBar(props){
                         }}
                     />
 
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexWrap: 'wrap',
-                    }}>
-                        <PersonIcon style={{marginRight:'1rem'}} />
-                        <NavLink href="#" text="My Bookings"/>
-                    </div>
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexWrap: 'wrap',
-                    }}>
-                        <CalendarMonthIcon style={{marginRight:'1rem'}}/>
-                        <NavLink href="/courses/find" text="Find A Course"/>
-                    </div>
-                    <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            flexWrap: 'wrap',
-                        }}>
-                        <LogoutIcon style={{marginRight:'1rem'}}/>
-                        <NavLink href="#" text="External Training"/>
-                    </div>
-                    <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            flexWrap: 'wrap',
-                        }}>
-                        <AppsIcon style={{marginRight:'1rem'}}/>
-                        <NavLink href="#" text="Learning Record"/>
-                    </div>
-                    <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            flexWrap: 'wrap',
-                        }}>
-                        <InfoIcon style={{marginRight:'1rem'}}/>
-                        <NavLink href="#" text="About L&D"/>
-                    </div>
+                    <List sx={{width:'100%', margin:0}}>
+                        <ListItem sx={{padding:0}}>
+                            <ListItemButton sx={{padding:0}}>  
+                                <ListItemIcon sx={{marginRight:'1em', minWidth:0}}>
+                                    <PersonIcon />
+                                </ListItemIcon>
+                                <ListItemText primaryTypographyProps={{fontSize: '1.1rem'}}  primary="My Bookings" />
+                            </ListItemButton>
+                        </ListItem>
 
-                    <List sx={{width:'100%'}}>
+                        <ListItem sx={{padding:0}}>
+                            <ListItemButton sx={{padding:0}} >  
+                                <ListItemIcon sx={{marginRight:'1em', minWidth:0}}>
+                                    <CalendarMonthIcon />
+                                </ListItemIcon>
+                                <ListItemText primaryTypographyProps={{fontSize: '1.1rem'}}  primary="Find A Course" />
+                            </ListItemButton>
+                        </ListItem>
+
+                        <ListItem sx={{padding:0}}>
+                            <ListItemButton sx={{padding:0}}>  
+                                <ListItemIcon sx={{marginRight:'1em', minWidth:0}}>
+                                    <LogoutIcon />
+                                </ListItemIcon>
+                                <ListItemText primaryTypographyProps={{fontSize: '1.1rem'}}  primary="External Training" />
+                            </ListItemButton>
+                        </ListItem>
+
+                        <ListItem sx={{padding:0}}>
+                            <ListItemButton sx={{padding:0}}>  
+                                <ListItemIcon sx={{marginRight:'1em', minWidth:0}}>
+                                    <AppsIcon />
+                                </ListItemIcon>
+                                <ListItemText primaryTypographyProps={{fontSize: '1.1rem'}}  primary="Learning Record" />
+                            </ListItemButton>
+                        </ListItem>
+
+                        <ListItem sx={{padding:0}}>
+                            <ListItemButton sx={{padding:0}}>  
+                                <ListItemIcon sx={{marginRight:'1em', minWidth:0}}>
+                                    <InfoIcon />
+                                </ListItemIcon>
+                                <ListItemText primaryTypographyProps={{fontSize: '1.1rem'}}  primary="About L&D" />
+                            </ListItemButton>
+                        </ListItem>
+
                         <ListItem sx={{padding:0}}>
                             <ListItemButton sx={{padding:0}} onClick={handleClick}>  
                                 <ListItemIcon sx={{marginRight:'1em', minWidth:0}}>
@@ -161,9 +169,7 @@ export default function NavigationSideBar(props){
                                 </ListItemButton>
                                 </List>
                             </Collapse>
-                        </List>
 
-                        <List sx={{width:'100%'}}>
                         <ListItem sx={{padding:0}}>
                             <ListItemButton sx={{padding:0}} onClick={handleAdminClick}>  
                                 <ListItemIcon sx={{marginRight:'1em', minWidth:0}}>
@@ -175,7 +181,7 @@ export default function NavigationSideBar(props){
                             </ListItem>
                             <Collapse in={adminListOpen} timeout="auto" unmountOnExit>
                                 <List component="div" disablePadding>
-                                <ListItemButton sx={{ pl: 4 }}>
+                                <ListItemButton sx={{ pl: 4 }} onClick={() => {handleNavigate("/admin")}}>
                                         <ListItemText primary="Dashboard" sx={{marginLeft:'1em'}}/>
                                 </ListItemButton>
                                 <ListItemButton sx={{ pl: 4 }}>
@@ -204,16 +210,16 @@ export default function NavigationSideBar(props){
                                 </ListItemButton>
                                 </List>
                             </Collapse>
-                        </List>
 
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexWrap: 'wrap',
-                    }}>
-                        <SettingsIcon style={{marginRight:'1rem'}}/>
-                        <NavLink href="#" text="Settings"/>
-                    </div>
+                            <ListItem sx={{padding:0}}>
+                            <ListItemButton sx={{padding:0}}>  
+                                <ListItemIcon sx={{marginRight:'1em', minWidth:0}}>
+                                    <SettingsIcon />
+                                </ListItemIcon>
+                                <ListItemText primaryTypographyProps={{fontSize: '1.1rem'}}  primary="Settings" />
+                            </ListItemButton>
+                        </ListItem>
+                        </List>
                 </Stack>
                 <Box sx={{height:'100vh',display: 'flex',justifyContent: "flex-end", alignItems: "flex-end"}}>
                         <IconButton onClick={signOut}>

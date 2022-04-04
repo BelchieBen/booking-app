@@ -10,7 +10,9 @@ import {useState} from 'react';
 import React, {useRef} from 'react';
 import Homepage from './components/pages/Homepage';
 import FindACourse from './components/pages/FindACourse';
-import LearningRecord from './components/pages/LearningRecord'
+import LearningRecord from './components/pages/LearningRecord';
+import AdminDashboard from './components/pages/AdminDashboard';
+import NewCourse from './components/pages/NewCourse';
 import Stack from '@mui/material/Stack';
 import {
   Routes,
@@ -31,6 +33,8 @@ function App() {
                 <Route path='/' element={<Homepage/>} />
                 <Route path='/courses/find' element={<FindACourse/>} />
                 <Route path='/record/:id' element={<LearningRecord user={user}/>} />
+                <Route path='/admin' element={<AdminDashboard /> } />
+                <Route path='/course/new' element={<NewCourse />} />
               </Routes>
           </Stack>
           
