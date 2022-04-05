@@ -6,7 +6,25 @@ import FileUpload from './FileUpload';
 
 export default function CourseDetails(props){
     const [targetAudience, setTargetAudience] = useState("");
-    const [learningObjectives, setLearningObjectives] = useState([]);
+    const [learningObjectives, setLearningObjectives] = useState([{id:0, value:''}]);
+    let useRefArray = React.useRef([]);
+    const [arrayDOMElements, setArrayDOMElements] = useState(useRefArray.current);
+    const [learningObjectiveValue, setLearningObjectiveValue] = useState(learningObjectives.map((lo) => ""));
+
+    React.useEffect(() => {
+        useRefArray.current = learningObjectives.map((a) => {
+            const i = learningObjectives.indexOf(a);
+            return(
+                <LearningObjectiveTextbox 
+                    handleRemove={() => {handleRemove(i)}} 
+                    loIndex={i}
+                    value={a.value}
+                    onChange={(e) => {setLearningObjectives({id:a.id, value:e.target.value})}}
+                    key={a.id}/>
+            );
+        });
+        setArrayDOMElements(useRefArray.current);
+    }, [learningObjectives]);
     
     // Fields
     const [courseTitle, setCourseTitle] = useState("");
@@ -25,15 +43,30 @@ export default function CourseDetails(props){
     }
 
     React.useEffect(() => {
-        console.log(courseSpaces);
     })
 
+    const handleRemove = (i) => {
+        console.log("Learning Objectives", learningObjectives);
+        let arr = learningObjectives.slice();
+        arr.splice(i, 1);
+        console.log("New array", arr);
+        console.log("The index of i",i)
+        setLearningObjectives(arr);
+    }
+
     const addLine = () => {
-        setLearningObjectives(learningObjectives.concat(<LearningObjectiveTextbox loIndex={learningObjectives.length} key={learningObjectives.length} />));
+        const ids = learningObjectives.map((lo) => lo.id);
+        const unique = learningObjectives.length > 0 ? Math.max(...ids) : -1;
+        let arr = [{id:unique + 1 }].concat(learningObjectives);
+        setLearningObjectives(arr);
+    }
+
+    const handleValueChanged = (e) => {
+        console.log(learningObjectiveValue);
     }
     return(
         <Stack direction="row" spacing={4}>
-            <Box>
+            <Box sx={{width:'100%'}}>
                 <Stack direction="column" sx={{marginTop:4}} spacing={2}>
                         <TextField label="Course Title" variant="outlined" value={courseTitle} onChange={(e) => {setCourseTitle(e.target.value)}}/>
                         <TextField label="Course Description" multiline rows={4} maxRows={4} variant="outlined" value={courseDescription} onChange={(e) => {setCourseDescription(e.target.value)}}/>
@@ -86,8 +119,13 @@ export default function CourseDetails(props){
                         <Stack mt={2}>
                             <Typography variant="body1">Learning Objectives</Typography>
                             <Stack spacing={2}>    
-                                {learningObjectives}
-                                {console.log(learningObjectives)}
+                                {arrayDOMElements}
+                                {/* {[...Array(numLearningObjectives)].map(index => {
+                                    <LearningObjectiveTextbox 
+                                        value=''
+                                        loIndex={index} 
+                                        handleRemove={() => {handleRemove(index)}} />
+                                })} */}
                             </Stack>
 
                             
@@ -96,7 +134,10 @@ export default function CourseDetails(props){
             </Box>
             <Box>
                 <Stack>  
-                    <Typography variant="h6">Course Thumbnail</Typography>
+                    <Typography variant="h6" mt={2}>Course Thumbnail</Typography>
+                    <FileUpload />
+
+                    <Typography variant="h6" mt={2}>Self Directed Learning</Typography>
                     <FileUpload />
                 </Stack>
             </Box>
