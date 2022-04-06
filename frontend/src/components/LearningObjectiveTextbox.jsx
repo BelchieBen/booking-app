@@ -4,8 +4,8 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 export default function LearningObjectiveTextbox(props){
     return(
-        <Stack direction="row" spacing={2}>
-                <TextField sx={{width:'100%'}} value={props.value} variant="outlined" size="small"/>
+        <Stack direction="row" spacing={2} mt={2}>
+                <TextField sx={{width:'100%'}} value={props.value} label="New Objective" variant="outlined" size="small"/>
                 <IconButton onClick={() => {props.handleRemove(props.loIndex)}}>    
                     <CancelIcon/>
                 </IconButton>

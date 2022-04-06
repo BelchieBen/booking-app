@@ -1,16 +1,28 @@
 import React, {useState} from "react";
-import {Box, Stack, Typography, TextField, Grid, InputLabel, Select, MenuItem, FormControl, IconButton, Button} from '@mui/material';
-import CancelIcon from '@mui/icons-material/Cancel';
+import {
+    Box, 
+    Stack, 
+    Typography, 
+    TextField, 
+    InputLabel, 
+    Select, 
+    MenuItem, 
+    FormControl, 
+    Button
+} from '@mui/material';
 import LearningObjectiveTextbox from './LearningObjectiveTextbox';
 import FileUpload from './FileUpload';
+import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
 
 export default function CourseDetails(props){
-    const [targetAudience, setTargetAudience] = useState("");
+    // These states are all used to handle the Learning Objective fields
     const [learningObjectives, setLearningObjectives] = useState([{id:0, value:''}]);
     let useRefArray = React.useRef([]);
     const [arrayDOMElements, setArrayDOMElements] = useState(useRefArray.current);
     const [learningObjectiveValue, setLearningObjectiveValue] = useState(learningObjectives.map((lo) => ""));
 
+    // Use effect to watch the aray of learning objectives and update the UI when new fields are added
     React.useEffect(() => {
         useRefArray.current = learningObjectives.map((a) => {
             const i = learningObjectives.indexOf(a);
@@ -29,11 +41,16 @@ export default function CourseDetails(props){
     // Fields
     const [courseTitle, setCourseTitle] = useState("");
     const [courseDescription, setCourseDescription] = useState("");
-    const [courseAudience, setCourseAudience] = useState("");
     const [courseLength, setCourseLength] = useState(0);
     const [contentIcons, setContentIcons] = useState([]);
+    const [targetAudience, setTargetAudience] = useState("");
     const [courseSpaces, setCourseSpaces] = useState(0);
+    const [courseThumbnail, setCourseThumbnail] = useState();
+    const [selfDirectedLearning, setSelfDirectedLearning] = useState();
 
+    const navigate = useNavigate();
+
+    // Validation for the number inputs to only allow numbers between 0 & 100
     const handleNumberInput = (e, setState) => {
         const val = parseInt(e.target.value);
         console.log(e.target.value.toString());
@@ -42,9 +59,7 @@ export default function CourseDetails(props){
         }
     }
 
-    React.useEffect(() => {
-    })
-
+    // Function to handle the deletion of a learning objective field
     const handleRemove = (i) => {
         console.log("Learning Objectives", learningObjectives);
         let arr = learningObjectives.slice();
@@ -54,6 +69,7 @@ export default function CourseDetails(props){
         setLearningObjectives(arr);
     }
 
+    // Function to create new learning objective fields
     const addLine = () => {
         const ids = learningObjectives.map((lo) => lo.id);
         const unique = learningObjectives.length > 0 ? Math.max(...ids) : -1;
@@ -61,9 +77,53 @@ export default function CourseDetails(props){
         setLearningObjectives(arr);
     }
 
-    const handleValueChanged = (e) => {
-        console.log(learningObjectiveValue);
+    const getImage = (image, name) => {
+        console.log("||| Key: ", name, "||| Image: ", image);
+
+        if(name === "thumbnail"){
+            setCourseThumbnail(image);
+        }
+        else if(name === "learning"){
+            setSelfDirectedLearning(image);
+        }
+
     }
+
+    const sendImages = () => {
+        console.log("Thumbnail: ", courseThumbnail, "Learning Image: ", selfDirectedLearning);
+        const formData = new FormData();
+        formData.append('thumbnail',courseThumbnail, courseThumbnail.name);
+        formData.append('selfDirectedLearning',selfDirectedLearning, selfDirectedLearning.name, formData);
+        console.log("Form Data: ", formData);
+        const headers = {
+            "Content-Type":"form-data"
+        };
+        axios.post("/upload/images",formData)
+        .then( res=>{
+            console.log("Axios Response", res);
+        });
+    }
+
+    const saveCourse = (courseState) => {
+        sendImages();
+        axios.post('/course/new',{
+            title: courseTitle,
+            description: courseDescription,
+            audience: targetAudience,
+            icons: contentIcons,
+            length: courseLength,
+            spaces: courseSpaces,
+            state: courseState,
+            thumbnail: courseThumbnail.name,
+            directedLearning: selfDirectedLearning.name
+        }).then(function(response) {
+            console.log(response);
+            navigate('/admin');
+        }).then(function(error){
+            console.log(error);
+        })
+    }
+
     return(
         <Stack direction="row" spacing={4}>
             <Box sx={{width:'100%'}}>
@@ -120,12 +180,6 @@ export default function CourseDetails(props){
                             <Typography variant="body1">Learning Objectives</Typography>
                             <Stack spacing={2}>    
                                 {arrayDOMElements}
-                                {/* {[...Array(numLearningObjectives)].map(index => {
-                                    <LearningObjectiveTextbox 
-                                        value=''
-                                        loIndex={index} 
-                                        handleRemove={() => {handleRemove(index)}} />
-                                })} */}
                             </Stack>
 
                             
@@ -135,10 +189,17 @@ export default function CourseDetails(props){
             <Box>
                 <Stack>  
                     <Typography variant="h6" mt={2}>Course Thumbnail</Typography>
-                    <FileUpload />
+                    <FileUpload setImage={(image, key) => {getImage(image, key)}} name="thumbnail"/>
 
                     <Typography variant="h6" mt={2}>Self Directed Learning</Typography>
-                    <FileUpload />
+                    <FileUpload setImage={(image, key) => {getImage(image, key)}} name="learning"/>
+
+                    
+                </Stack>
+                <Stack direction="row" spacing={2}>
+                    <Button variant="contained" onClick={() => {saveCourse("Published")}} sx={{height:'fit-content'}}>Publish</Button>
+                    <Button variant="contained" onClick={() => {saveCourse("Draft")}} sx={{height:'fit-content', minWidth:'max-content'}}>Save As Draft</Button>
+                    <Button variant="contained" sx={{height:'fit-content'}}>Discard</Button>
                 </Stack>
             </Box>
         </Stack>

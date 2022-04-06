@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Box, Stack, Typography} from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-export default function FileUpload(){
+export default function FileUpload(props){
     const [selectedFile, setSelectedFile] = useState(null);
     const [isFilePicked, setIsFilePicked] = useState(false);
     const [preview, setPreview] = useState();
@@ -20,6 +20,14 @@ export default function FileUpload(){
 
     const handleUpload = (e) => {
         setSelectedFile(e.target.files[0]);
+
+        if(props.name === "thumbnail"){
+            props.setImage(e.target.files[0], props.name);
+        }
+        else if(props.name === "learning"){
+            props.setImage(e.target.files[0], props.name);
+        }
+
         setIsFilePicked(true);
     }
 
@@ -27,6 +35,15 @@ export default function FileUpload(){
         e.preventDefault();
         console.log("drag and dropped");
         setSelectedFile(...e.dataTransfer.files);
+
+        console.log(props.name);
+
+        if(props.name === "thumbnail"){
+            props.setImage(...e.dataTransfer.files, props.name);
+        }
+        else if(props.name === "learning"){
+            props.setImage(...e.dataTransfer.files, props.name);
+        }
         setIsFilePicked(true);
     }
 
