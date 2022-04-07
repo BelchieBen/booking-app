@@ -13,6 +13,7 @@ import FindACourse from './components/pages/FindACourse';
 import LearningRecord from './components/pages/LearningRecord';
 import AdminDashboard from './components/pages/AdminDashboard';
 import NewCourse from './components/pages/NewCourse';
+import ViewCourse from './components/pages/ViewCourse';
 import Stack from '@mui/material/Stack';
 import {
   Routes,
@@ -35,6 +36,7 @@ function App() {
                 <Route path='/record/:id' element={<LearningRecord user={user}/>} />
                 <Route path='/admin' element={<AdminDashboard /> } />
                 <Route path='/course/new' element={<NewCourse />} />
+                <Route path='/course/:id' element={<ViewCourse/>} />
               </Routes>
           </Stack>
           

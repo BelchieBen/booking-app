@@ -1,5 +1,5 @@
 const express = require('express');
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3050;
 const database = require('./database.tsx');
 const User = require('./models/User.tsx');
 const Course = require('./models/Course.tsx');
@@ -66,6 +66,11 @@ app.post("/course/new", (req, res) => {
 
 app.get('/courses', (req, res) => {
     const courses = Course.findAll().then((courses) => {res.json({courses})});
+})
+
+app.get('/course/:id', (req, res) => {
+    console.log(req.params.id);
+    const course = Course.findByPk(req.params.id).then((course) => {res.json({course})});
 })
 
 app.listen(PORT, () => {

@@ -15,19 +15,18 @@ export default function HomepageCard(props){
     const navigate = useNavigate();
     return(
         
-        <Card sx={{width:'400px'}}>
-            <CardHeader title={props.title}/>
-            <div className="img-container">
+        <Card sx={{width:'400px', display: 'flex', flexDirection:'column', alignItems: 'center',justifyContent: 'center'}}>
             <CardMedia 
                 className="card img"
                 component="img"
                 image={require("../../../backend/uploads/"+props.image)}/>
-            </div>
-            <CardContent>
-                <Typography variant="body1">{props.body}</Typography>
+            
+            <CardHeader title="Course Added!" sx={{padding:0}}/>
+            <CardContent sx={{paddingTop:0, paddingBottom:0}}>
+                <Typography variant="body1">A new course {props.body} has been added!</Typography>
             </CardContent>
-            <CardActions>
-                <Button variant="text" sx={{marginLeft:"auto"}} onClick={() => { 
+            <CardActions sx={{paddingBottom:2}}>
+                <Button variant="contained" sx={{marginLeft:"auto"}} onClick={() => { 
                     navigate(props.buttonUrl)
                 }}>{props.buttonText}</Button>
             </CardActions>

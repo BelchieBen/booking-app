@@ -78,7 +78,7 @@ export default function Homepage(){
             // Display the announcements if there are any
             <Stack direction="row" spacing={2}>
             {announcements.map( data => (
-                <HomepageCard title={data.courseTitle} body={data.courseDescription} image={data.courseThumbnail} buttonText="View"/>
+                <HomepageCard title={data.courseTitle} body={data.courseDescription} image={data.courseThumbnail} buttonText="View Course" buttonUrl={"/course/"+data.id}/>
             ))}
             </Stack>
         }

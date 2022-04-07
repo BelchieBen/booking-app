@@ -34,8 +34,8 @@ body{
 
 .card.img{
   display: flex;
-  height:100px;
-  width: 100px;
+  height:200px;
+  width: auto;
 }
 
 .StyledPaper::-webkit-scrollbar{

@@ -9,7 +9,7 @@ export default function NewCourse(){
     return(
         <Box sx={{margin: 2, width:'100%'}}>
             <PageHeader subtitle="New Course" title="New Course"/>
-            <CourseDetails />
+            <CourseDetails isReadyOnly={false} />
         </Box>
     )
 }

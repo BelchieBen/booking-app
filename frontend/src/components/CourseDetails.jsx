@@ -46,9 +46,23 @@ export default function CourseDetails(props){
     const [targetAudience, setTargetAudience] = useState("");
     const [courseSpaces, setCourseSpaces] = useState(0);
     const [courseThumbnail, setCourseThumbnail] = useState();
+    const [courseThumbnailName, setCourseThumbnailName] = useState("notfound.svg");
     const [selfDirectedLearning, setSelfDirectedLearning] = useState();
+    const [selfDirectedLearningName, setSelfDirectedLearningName] = useState("notfound.svg");
 
     const navigate = useNavigate();
+
+    React.useEffect(() => {
+        if(props.course !== undefined){
+            setCourseTitle(props.course.courseTitle);
+            setCourseDescription(props.course.courseDescription);
+            setCourseLength(props.course.courseLength);
+            setTargetAudience(props.course.courseAudience);
+            setCourseSpaces(props.course.courseSpaces);
+            setCourseThumbnailName(props.course.courseThumbnail);
+            setSelfDirectedLearningName(props.course.selfDirectedLearning);
+        }
+    }, [])
 
     // Validation for the number inputs to only allow numbers between 0 & 100
     const handleNumberInput = (e, setState) => {
@@ -128,14 +142,28 @@ export default function CourseDetails(props){
         <Stack direction="row" spacing={4}>
             <Box sx={{width:'100%'}}>
                 <Stack direction="column" sx={{marginTop:4}} spacing={2}>
-                        <TextField label="Course Title" variant="outlined" value={courseTitle} onChange={(e) => {setCourseTitle(e.target.value)}}/>
-                        <TextField label="Course Description" multiline rows={4} maxRows={4} variant="outlined" value={courseDescription} onChange={(e) => {setCourseDescription(e.target.value)}}/>
+                        <TextField 
+                            label="Course Title" 
+                            variant="outlined" 
+                            value={courseTitle} 
+                            onChange={(e) => {setCourseTitle(e.target.value)}} 
+                            inputProps={{readonly:props.isReadyOnly}}/>
+                        <TextField 
+                            label="Course Description" 
+                            multiline 
+                            rows={4} 
+                            maxRows={4} 
+                            variant="outlined"
+                            value={courseDescription} 
+                            onChange={(e) => {setCourseDescription(e.target.value)}}
+                            inputProps={{readonly:props.isReadyOnly}}/>
                     </Stack>
                         <Stack direction="row" alignItems="flex-end" spacing={2} mt={2}>
                             <Stack>
                                 <FormControl>
                                     <InputLabel id="target-audience-label">Target Audience</InputLabel>
                                     <Select 
+                                        inputProps={{readonly:props.isReadyOnly}}
                                         labelId="target-audience-label"
                                         label="Target Audience"
                                         value={targetAudience}
@@ -150,7 +178,8 @@ export default function CourseDetails(props){
                                     variant="outlined" 
                                     InputProps={{ inputProps:{type:'number', min:0, max:100 } }}  
                                     value={courseLength} 
-                                    onChange={(e) => {handleNumberInput(e, setCourseLength)}}/>
+                                    onChange={(e) => {handleNumberInput(e, setCourseLength)}}
+                                    inputProps={{readonly:props.isReadyOnly}}/>
                         </Stack>
 
                             <Stack direction="row" alignItems="flex-end" spacing={2} mt={2}>
@@ -158,6 +187,7 @@ export default function CourseDetails(props){
                                     <FormControl>
                                         <InputLabel id="content-icons-label">Content Icons</InputLabel>
                                         <Select 
+                                            inputProps={{readonly:props.isReadyOnly}}
                                             labelId="content-icons-label"
                                             label="Content Icons"
                                             value={contentIcons}
@@ -173,7 +203,8 @@ export default function CourseDetails(props){
                                     variant="outlined" 
                                     InputProps={{ inputProps:{type:'number', min:0, max:100 } }}  
                                     value={courseSpaces} 
-                                    onChange={(e) => {handleNumberInput(e, setCourseSpaces)}}/>
+                                    onChange={(e) => {handleNumberInput(e, setCourseSpaces)}}
+                                    inputProps={{readonly:props.isReadyOnly}}/>
                             </Stack>
 
                         <Stack mt={2}>
@@ -183,17 +214,34 @@ export default function CourseDetails(props){
                             </Stack>
 
                             
-                            <Button sx={{width:'fit-content', marginLeft:"auto", marginTop:2, marginRight:"55px",}} variant="contained" onClick={addLine}>Add Line</Button>
+                            <Button 
+                                sx={{
+                                    width:'fit-content', 
+                                    marginLeft:"auto", 
+                                    marginTop:2, 
+                                    marginRight:"55px"
+                                }} 
+                                variant="contained" 
+                                onClick={addLine}
+                                inputProps={{readonly:props.isReadyOnly}}>
+                                    Add Line
+                                </Button>
                 </Stack>
             </Box>
             <Box>
                 <Stack>  
                     <Typography variant="h6" mt={2}>Course Thumbnail</Typography>
+                    {!props.isReadyOnly ? 
                     <FileUpload setImage={(image, key) => {getImage(image, key)}} name="thumbnail"/>
-
+                    :
+                    <Box component="img" src={require("../../../backend/uploads/"+courseThumbnailName)} sx={{height:300, width:300}}/>
+                    }
                     <Typography variant="h6" mt={2}>Self Directed Learning</Typography>
+                    {!props.isReadyOnly ? 
                     <FileUpload setImage={(image, key) => {getImage(image, key)}} name="learning"/>
-
+                    :
+                    <Box component="img" src={require("../../../backend/uploads/"+selfDirectedLearningName)} sx={{height:300, width:300}}/>
+                    }
                     
                 </Stack>
                 <Stack direction="row" spacing={2}>
