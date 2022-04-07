@@ -54,10 +54,10 @@ export default function Homepage(){
 
     React.useEffect(() => {
         if(announcements.length === 0){
-            axios.get('/api/announcements')
+            axios.get('/courses')
             .then((res) => {
-                setAnnouncements(res.data);
-                console.log(announcements);
+                setAnnouncements(res.data.courses);
+                console.log("Announcements: ", res);
             })
         }
     }, [])
@@ -78,7 +78,7 @@ export default function Homepage(){
             // Display the announcements if there are any
             <Stack direction="row" spacing={2}>
             {announcements.map( data => (
-                <HomepageCard title={data.title} body={data.body} image={data.image} buttonText={data.buttonText}/>
+                <HomepageCard title={data.courseTitle} body={data.courseDescription} image={data.courseThumbnail} buttonText="View"/>
             ))}
             </Stack>
         }

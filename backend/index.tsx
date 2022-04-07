@@ -5,17 +5,18 @@ const User = require('./models/User.tsx');
 const Course = require('./models/Course.tsx');
 const Announcement = require('./models/Announcement.tsx');
 const multer = require('multer');
+const path = require('path');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './uploads/');
+        cb(null, path.join(__dirname, './uploads/'));
     },
     filename: (req, file, cb) => {
-        cb(null, new Date().toISOString() + file.originalname);
+        cb(null, Date.now() + file.originalname);
     }
 });
 
-const upload = multer({storage:storage}).array("multi-files", 10);
+const upload = multer({storage:storage});
 
 const app = express();
 app.use(express.json())
@@ -44,12 +45,13 @@ app.post("/announcement/create", (req, res) => {
     });
     console.log("Added announcement");
 })
-app.post("/upload/images",upload., (req, res) => {
-    console.log(req);
-    res.json({message: "Image sent"});
+app.post("/upload/images", upload.single('image'), (req, res) => {
+    console.log(req.file);
+    res.json({uploadedFilename: req.file.filename});
 })
 
 app.post("/course/new", (req, res) => {
+    console.log("Request Body! ",req.body);
     const course = Course.create({
         courseTitle: req.body.title,
         courseDescription: req.body.description,
@@ -59,8 +61,11 @@ app.post("/course/new", (req, res) => {
         courseThumbnail: req.body.thumbnail,
         selfDirectedLearning: req.body.directedLearning,
     })
-    console.log(req.body);
     res.json({message: "Success!"});
+})
+
+app.get('/courses', (req, res) => {
+    const courses = Course.findAll().then((courses) => {res.json({courses})});
 })
 
 app.listen(PORT, () => {

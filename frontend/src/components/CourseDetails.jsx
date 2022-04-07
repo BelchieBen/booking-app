@@ -89,39 +89,39 @@ export default function CourseDetails(props){
 
     }
 
-    const sendImages = () => {
-        console.log("Thumbnail: ", courseThumbnail, "Learning Image: ", selfDirectedLearning);
+    const sendImages = (image) => {
+        console.log("Image Name", image);
         const formData = new FormData();
-        formData.append('thumbnail',courseThumbnail, courseThumbnail.name);
-        formData.append('selfDirectedLearning',selfDirectedLearning, selfDirectedLearning.name, formData);
-        console.log("Form Data: ", formData);
-        const headers = {
-            "Content-Type":"form-data"
-        };
-        axios.post("/upload/images",formData)
-        .then( res=>{
-            console.log("Axios Response", res);
-        });
+        formData.append('image',image, image.name);
+        return axios.post("/upload/images",formData);
     }
 
     const saveCourse = (courseState) => {
-        sendImages();
-        axios.post('/course/new',{
-            title: courseTitle,
-            description: courseDescription,
-            audience: targetAudience,
-            icons: contentIcons,
-            length: courseLength,
-            spaces: courseSpaces,
-            state: courseState,
-            thumbnail: courseThumbnail.name,
-            directedLearning: selfDirectedLearning.name
-        }).then(function(response) {
-            console.log(response);
-            navigate('/admin');
-        }).then(function(error){
-            console.log(error);
-        })
+        let thumbnailName = "";
+        let learningName = "";
+        const thumbnail = sendImages(courseThumbnail).then(res => {
+            thumbnailName = res.data.uploadedFilename;
+            sendImages(selfDirectedLearning).then(res => {
+                learningName = res.data.uploadedFilename;
+                axios.post('/course/new',{
+                    title: courseTitle,
+                    description: courseDescription,
+                    audience: targetAudience,
+                    icons: contentIcons,
+                    length: courseLength,
+                    spaces: courseSpaces,
+                    state: courseState,
+                    thumbnail:thumbnailName ,
+                    directedLearning: learningName
+                }).then(function(response) {
+                    console.log(response);
+                    navigate('/admin');
+                }).then(function(error){
+                    console.log(error);
+                })
+            });
+            
+        });
     }
 
     return(

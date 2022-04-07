@@ -15,13 +15,13 @@ export default function HomepageCard(props){
     const navigate = useNavigate();
     return(
         
-        <Card className="card-container">
+        <Card sx={{width:'400px'}}>
             <CardHeader title={props.title}/>
             <div className="img-container">
             <CardMedia 
                 className="card img"
                 component="img"
-                image={props.image}/>
+                image={require("../../../backend/uploads/"+props.image)}/>
             </div>
             <CardContent>
                 <Typography variant="body1">{props.body}</Typography>

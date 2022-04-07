@@ -66,7 +66,7 @@ export default function FileUpload(props){
 
     return(
         <Box>
-            <input type="file" id="upload" hidden onChange={handleUpload} />
+            <input type="file" id="upload" name="multi-files" hidden onChange={handleUpload} />
             <label for="upload">
             <Box 
                 onDrop={e => handleDrop(e)}
