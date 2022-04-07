@@ -15,14 +15,14 @@ export default function HomepageCard(props){
     const navigate = useNavigate();
     return(
         
-        <Card sx={{width:'400px', display: 'flex', flexDirection:'column', alignItems: 'center',justifyContent: 'center'}}>
+        <Card sx={{width:'400px', display: 'flex', flexDirection:'column', alignItems: 'center',justifyContent: 'flex-start'}}>
             <CardMedia 
                 className="card img"
                 component="img"
                 image={require("../../../backend/uploads/"+props.image)}/>
             
             <CardHeader title="Course Added!" sx={{padding:0}}/>
-            <CardContent sx={{paddingTop:0, paddingBottom:0}}>
+            <CardContent sx={{paddingTop:0, paddingBottom:0, textAlign: 'center'}}>
                 <Typography variant="body1">A new course {props.body} has been added!</Typography>
             </CardContent>
             <CardActions sx={{paddingBottom:2}}>

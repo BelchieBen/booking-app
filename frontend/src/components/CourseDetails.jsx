@@ -147,7 +147,7 @@ export default function CourseDetails(props){
                             variant="outlined" 
                             value={courseTitle} 
                             onChange={(e) => {setCourseTitle(e.target.value)}} 
-                            inputProps={{readonly:props.isReadyOnly}}/>
+                            inputProps={{readOnly:props.isReadyOnly}}/>
                         <TextField 
                             label="Course Description" 
                             multiline 
@@ -156,14 +156,14 @@ export default function CourseDetails(props){
                             variant="outlined"
                             value={courseDescription} 
                             onChange={(e) => {setCourseDescription(e.target.value)}}
-                            inputProps={{readonly:props.isReadyOnly}}/>
+                            inputProps={{readOnly:props.isReadyOnly}}/>
                     </Stack>
                         <Stack direction="row" alignItems="flex-end" spacing={2} mt={2}>
                             <Stack>
                                 <FormControl>
                                     <InputLabel id="target-audience-label">Target Audience</InputLabel>
                                     <Select 
-                                        inputProps={{readonly:props.isReadyOnly}}
+                                        inputProps={{readOnly:props.isReadyOnly}}
                                         labelId="target-audience-label"
                                         label="Target Audience"
                                         value={targetAudience}
@@ -176,10 +176,9 @@ export default function CourseDetails(props){
                                 <TextField 
                                     label="Course Length" 
                                     variant="outlined" 
-                                    InputProps={{ inputProps:{type:'number', min:0, max:100 } }}  
+                                    InputProps={{ inputProps:{type:'number', min:0, max:100, readOnly:props.isReadyOnly } }}  
                                     value={courseLength} 
-                                    onChange={(e) => {handleNumberInput(e, setCourseLength)}}
-                                    inputProps={{readonly:props.isReadyOnly}}/>
+                                    onChange={(e) => {handleNumberInput(e, setCourseLength)}}/>
                         </Stack>
 
                             <Stack direction="row" alignItems="flex-end" spacing={2} mt={2}>
@@ -187,7 +186,7 @@ export default function CourseDetails(props){
                                     <FormControl>
                                         <InputLabel id="content-icons-label">Content Icons</InputLabel>
                                         <Select 
-                                            inputProps={{readonly:props.isReadyOnly}}
+                                            inputProps={{readOnly:props.isReadyOnly}}
                                             labelId="content-icons-label"
                                             label="Content Icons"
                                             value={contentIcons}
@@ -201,10 +200,9 @@ export default function CourseDetails(props){
                                 <TextField 
                                     label="Available Spaces" 
                                     variant="outlined" 
-                                    InputProps={{ inputProps:{type:'number', min:0, max:100 } }}  
+                                    InputProps={{ inputProps:{type:'number', min:0, max:100, readOnly:props.isReadyOnly } }}  
                                     value={courseSpaces} 
-                                    onChange={(e) => {handleNumberInput(e, setCourseSpaces)}}
-                                    inputProps={{readonly:props.isReadyOnly}}/>
+                                    onChange={(e) => {handleNumberInput(e, setCourseSpaces)}}/>
                             </Stack>
 
                         <Stack mt={2}>
@@ -223,7 +221,7 @@ export default function CourseDetails(props){
                                 }} 
                                 variant="contained" 
                                 onClick={addLine}
-                                inputProps={{readonly:props.isReadyOnly}}>
+                                inputProps={{readOnly:props.isReadyOnly}}>
                                     Add Line
                                 </Button>
                 </Stack>
