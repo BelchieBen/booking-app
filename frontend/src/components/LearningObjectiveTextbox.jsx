@@ -6,6 +6,12 @@ export default function LearningObjectiveTextbox(props){
     const [value, setValue] =useState("");
 
     React.useEffect(() => {
+        if(value.length === 0){
+            setValue(props.val);
+        }
+    }, [value])
+
+    React.useEffect(() => {
         props.updateLearningObjectives(value);
     }, [value])
 

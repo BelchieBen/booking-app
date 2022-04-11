@@ -8,6 +8,7 @@ import NotFound from '../NotFound';
 export default function NewCourse(props){
     const [courseId, setCourseId] = useState(0);
     const [course, setCourse] = useState();
+    const [objectives, setObjectives] = useState();
     const getId = () => {
         const url = window.location.href;
         const array = url.split('/');
@@ -18,7 +19,8 @@ export default function NewCourse(props){
     const fetchCourse = () => {
         axios.get('/course/'+courseId)
             .then(res => {
-                console.log(res.data.course);
+                console.log(res.data.objectives);
+                setObjectives(res.data.objectives);
                 setCourse(res.data.courseS);
             })
     }
@@ -33,8 +35,11 @@ export default function NewCourse(props){
         if(courseId !== 0){
             fetchCourse();
         }
-        console.log(courseId);
     }, [courseId])
+
+    React.useEffect(() => {
+        console.log("Objectives", objectives);
+    }, [objectives])
 
     return(
         <Box sx={{margin: 2, width:'100%'}}>
@@ -43,7 +48,7 @@ export default function NewCourse(props){
             :
             <Box>
                 <PageHeader subtitle={"Course: "+course.courseTitle} title={course.courseTitle}/>
-                <CourseDetails course={course} isReadyOnly={true}/>
+                <CourseDetails lObjectives={objectives} course={course} isReadyOnly={true}/>
             </Box>
             }
         </Box>

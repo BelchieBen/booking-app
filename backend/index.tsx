@@ -47,12 +47,10 @@ app.post("/announcement/create", (req, res) => {
     console.log("Added announcement");
 })
 app.post("/upload/images", upload.single('image'), (req, res) => {
-    console.log(req.file);
     res.json({uploadedFilename: req.file.filename});
 })
 
 app.post("/course/new", (req, res) => {
-    console.log("Request Body! ",req.body);
     const course = Course.create({
         courseTitle: req.body.title,
         courseDescription: req.body.description,
@@ -64,13 +62,15 @@ app.post("/course/new", (req, res) => {
 
     })
     .then((c) => {
-        console.log(c);
+        console.log(req.body.learningObjectives);
         req.body.learningObjectives.map((reqObjective) => {
-            const obj = LearningObjective.create({
-                objective: reqObjective,
-                CourseId: c.id
-            })
-        });
+            if(reqObjective !== ''){
+                const obj = LearningObjective.create({
+                    objective: reqObjective,
+                    CourseId: c.id
+                })
+            };
+        })
     });
     
     res.json({message: "Success!"});
@@ -81,7 +81,6 @@ app.get('/courses', (req, res) => {
 })
 
 app.get('/course/:id', (req, res) => {
-    console.log(req.params.id);
     let courseS;
     const course = Course.findByPk(req.params.id)
         .then((course) => {
@@ -92,7 +91,6 @@ app.get('/course/:id', (req, res) => {
             }
         })})
         .then((objectives) => {
-            console.log(objectives);
             res.json({objectives, courseS})
         });
 })

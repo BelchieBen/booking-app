@@ -22,8 +22,10 @@ export default function CourseDetails(props){
     const [arrayDOMElements, setArrayDOMElements] = useState(useRefArray.current);
 
     const updateLearningObjectives = (lo) => {
-        let newLos = [lo].concat(learningObjectiveValue);
-        setLearningObjectiveValue(newLos);
+        if(lo !== ""){
+            let newLos = [lo].concat(learningObjectiveValue);
+            setLearningObjectiveValue(newLos);
+        }
     }
 
     // Use effect to watch the aray of learning objectives and update the UI when new fields are added
@@ -43,11 +45,6 @@ export default function CourseDetails(props){
             });
         setArrayDOMElements(useRefArray.current);
     }, [learningObjectives]);
-
-    React.useEffect(() => {
-        console.log("Learning Objectives: ",learningObjectives);
-        console.log("Learning Objectives Value: ",learningObjectiveValue);
-    }, [learningObjectives])
     
     // Fields
     const [courseTitle, setCourseTitle] = useState("");
@@ -73,7 +70,16 @@ export default function CourseDetails(props){
             setCourseSpaces(props.course.courseSpaces);
             setCourseThumbnailName(props.course.courseThumbnail);
             setSelfDirectedLearningName(props.course.selfDirectedLearning);
+            let objs = [];
+            props.lObjectives.map((obj) => {
+                objs.push({id:obj.id, value:obj.objective});
+            })
+            setLearningObjectives(objs);
         }
+    }, [])
+
+    React.useEffect(() => {
+        console.log("Hopefully populaed objectives: ",learningObjectives);
     }, [])
 
     // Validation for the number inputs to only allow numbers between 0 & 100
