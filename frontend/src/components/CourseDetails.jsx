@@ -23,8 +23,10 @@ export default function CourseDetails(props){
     //const [learningObjectiveValue, setLearningObjectiveValue] = useState(learningObjectives.map((lo) => ""));
 
     const updateLearningObjectives = (lo) => {
-        console.log(lo);
-        learningObjectives.concat([lo]);
+        console.log("Learning Objective Param ",lo);
+        let newLo = [{id:lo.id+1, value:lo.value}].concat(learningObjectives);
+        console.log("New Lo Array ",newLo);
+        setLearningObjectives(newLo);
     }
 
     // Use effect to watch the aray of learning objectives and update the UI when new fields are added
@@ -37,7 +39,6 @@ export default function CourseDetails(props){
                     loIndex={i}
                     val={a.value}
                     updateLearningObjectives={updateLearningObjectives}
-                    setLos={(lo) => {updateLearningObjectives(lo)}}
                     los={learningObjectives}
                     aId={a.id}
                     key={a.id}/>
@@ -48,7 +49,7 @@ export default function CourseDetails(props){
 
     React.useEffect(() => {
         console.log("Learning Objectives: ",learningObjectives);
-    })
+    }, [learningObjectives])
     
     // Fields
     const [courseTitle, setCourseTitle] = useState("");

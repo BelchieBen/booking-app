@@ -3,15 +3,21 @@ import {Stack, IconButton, TextField} from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 export default function LearningObjectiveTextbox(props){
+    const [value, setValue] =useState("");
+
+    React.useEffect(() => {
+        props.updateLearningObjectives({id:props.aId, value: value});
+    }, [value])
+
     return(
         <Stack direction="row" spacing={2} mt={2}>
                 <TextField 
                     sx={{width:'100%'}} 
-                    value={props.val} 
+                    value={value} 
                     label="New Objective" 
                     variant="outlined" 
                     size="small" 
-                    onChange={(e) => {props.updateLearningObjectives({id:props.aId, value:e.target.value})}}/>
+                    onChange={(e) => {setValue(e.target.value)}}/>
                 <IconButton onClick={() => {props.handleRemove(props.loIndex)}}>    
                     <CancelIcon/>
                 </IconButton>
