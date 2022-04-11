@@ -16,11 +16,11 @@ import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 
 export default function CourseDetails(props){
+    const [shouldUpdate, setShouldUpdate] = useState(true);
     // These states are all used to handle the Learning Objective fields
     const [learningObjectives, setLearningObjectives] = useState([{id:0, value:''}]);
     let useRefArray = React.useRef([]);
     const [arrayDOMElements, setArrayDOMElements] = useState(useRefArray.current);
-    //const [learningObjectiveValue, setLearningObjectiveValue] = useState(learningObjectives.map((lo) => ""));
 
     const updateLearningObjectives = (lo) => {
         console.log("Learning Objective Param ",lo);
@@ -31,19 +31,22 @@ export default function CourseDetails(props){
 
     // Use effect to watch the aray of learning objectives and update the UI when new fields are added
     React.useEffect(() => {
-        useRefArray.current = learningObjectives.map((a) => {
-            const i = learningObjectives.indexOf(a);
-            return(
-                <LearningObjectiveTextbox 
-                    handleRemove={() => {handleRemove(i)}} 
-                    loIndex={i}
-                    val={a.value}
-                    updateLearningObjectives={updateLearningObjectives}
-                    los={learningObjectives}
-                    aId={a.id}
-                    key={a.id}/>
-            );
-        });
+        if(shouldUpdate){
+            useRefArray.current = learningObjectives.map((a) => {
+                const i = learningObjectives.indexOf(a);
+                return(
+                    <LearningObjectiveTextbox 
+                        handleRemove={() => {handleRemove(i)}} 
+                        loIndex={i}
+                        val={a.value}
+                        updateLearningObjectives={updateLearningObjectives}
+                        los={learningObjectives}
+                        aId={a.id}
+                        key={a.id}/>
+                );
+            });
+            setShouldUpdate(false);
+        }
         setArrayDOMElements(useRefArray.current);
     }, [learningObjectives]);
 
@@ -98,9 +101,10 @@ export default function CourseDetails(props){
 
     // Function to create new learning objective fields
     const addLine = () => {
+        setShouldUpdate(true);
         const ids = learningObjectives.map((lo) => lo.id);
         const unique = learningObjectives.length > 0 ? Math.max(...ids) : -1;
-        let arr = [{id:unique + 1, value:'terst' }].concat(learningObjectives);
+        let arr = [{id:unique + 1, value:'' }].concat(learningObjectives);
         setLearningObjectives(arr);
     }
 
