@@ -20,7 +20,12 @@ export default function CourseDetails(props){
     const [learningObjectives, setLearningObjectives] = useState([{id:0, value:''}]);
     let useRefArray = React.useRef([]);
     const [arrayDOMElements, setArrayDOMElements] = useState(useRefArray.current);
-    const [learningObjectiveValue, setLearningObjectiveValue] = useState(learningObjectives.map((lo) => ""));
+    //const [learningObjectiveValue, setLearningObjectiveValue] = useState(learningObjectives.map((lo) => ""));
+
+    const updateLearningObjectives = (lo) => {
+        console.log(lo);
+        learningObjectives.concat([lo]);
+    }
 
     // Use effect to watch the aray of learning objectives and update the UI when new fields are added
     React.useEffect(() => {
@@ -30,13 +35,20 @@ export default function CourseDetails(props){
                 <LearningObjectiveTextbox 
                     handleRemove={() => {handleRemove(i)}} 
                     loIndex={i}
-                    value={a.value}
-                    onChange={(e) => {setLearningObjectives({id:a.id, value:e.target.value})}}
+                    val={a.value}
+                    updateLearningObjectives={updateLearningObjectives}
+                    setLos={(lo) => {updateLearningObjectives(lo)}}
+                    los={learningObjectives}
+                    aId={a.id}
                     key={a.id}/>
             );
         });
         setArrayDOMElements(useRefArray.current);
     }, [learningObjectives]);
+
+    React.useEffect(() => {
+        console.log("Learning Objectives: ",learningObjectives);
+    })
     
     // Fields
     const [courseTitle, setCourseTitle] = useState("");
@@ -87,7 +99,7 @@ export default function CourseDetails(props){
     const addLine = () => {
         const ids = learningObjectives.map((lo) => lo.id);
         const unique = learningObjectives.length > 0 ? Math.max(...ids) : -1;
-        let arr = [{id:unique + 1 }].concat(learningObjectives);
+        let arr = [{id:unique + 1, value:'terst' }].concat(learningObjectives);
         setLearningObjectives(arr);
     }
 
@@ -117,6 +129,11 @@ export default function CourseDetails(props){
             thumbnailName = res.data.uploadedFilename;
             sendImages(selfDirectedLearning).then(res => {
                 learningName = res.data.uploadedFilename;
+
+                learningObjectives.map((a) => {
+                    console.log(a);
+                });
+
                 axios.post('/course/new',{
                     title: courseTitle,
                     description: courseDescription,
@@ -127,7 +144,8 @@ export default function CourseDetails(props){
                     state: courseState,
                     thumbnail:thumbnailName ,
                     directedLearning: learningName
-                }).then(function(response) {
+                })
+                .then(function(response) {
                     console.log(response);
                     navigate('/admin');
                 }).then(function(error){
@@ -242,11 +260,15 @@ export default function CourseDetails(props){
                     }
                     
                 </Stack>
+                {!props.isReadyOnly ?
                 <Stack direction="row" spacing={2}>
                     <Button variant="contained" onClick={() => {saveCourse("Published")}} sx={{height:'fit-content'}}>Publish</Button>
                     <Button variant="contained" onClick={() => {saveCourse("Draft")}} sx={{height:'fit-content', minWidth:'max-content'}}>Save As Draft</Button>
                     <Button variant="contained" sx={{height:'fit-content'}}>Discard</Button>
                 </Stack>
+                :
+                <Box></Box>
+                }
             </Box>
         </Stack>
     )

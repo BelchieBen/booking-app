@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Typography, Stack, Box, Select, MenuItem, InputLabel } from '@mui/material';
+import { Typography, Stack, Box, Select, MenuItem, InputLabel, List, ListItem } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import InfoDialog from '../InfoDialog';
 import CompanyNews from '../../utils/images/CompanyNews.png';
@@ -62,7 +62,7 @@ export default function Homepage(){
         }
     }, [])
     return(
-        <Box sx={{margin: 2, width:'100%'}}>
+        <Box sx={{margin: 2, width:'100%', overflow: 'hidden'}}>
             {/* Header Section */}
             <PageHeader subtitle="Homepage" title="Welcome to I-Learn"/>
 
@@ -76,11 +76,16 @@ export default function Homepage(){
             <NotFound text="Looks like there are no announcements for now" /> 
             : 
             // Display the announcements if there are any
-            <Stack direction="row" spacing={2}>
-            {announcements.map( data => (
-                <HomepageCard title={data.courseTitle} body={data.courseDescription} image={data.courseThumbnail} buttonText="View Course" buttonUrl={"/course/"+data.id}/>
-            ))}
-            </Stack>
+            <Box sx={{width:"100%"}}>
+                <List component={Stack} direction="row" spacing={2} className="scroll-list" sx={{ width:'100%'}}>
+                {announcements.map( data => (
+                    <ListItem
+                        sx={{height:"100%", width:"100%", padding:0}}> 
+                        <HomepageCard title={data.courseTitle} body={data.courseDescription} image={data.courseThumbnail} buttonText="View Course" buttonUrl={"/course/"+data.id}/>
+                    </ListItem>
+                ))}
+                </List>
+            </Box>
         }
         {/* Your Feed Seciton */}
         <Typography variant="h6" sx={{marginBottom:2, marginTop:4, borderRadius:12}}>Your Feed</Typography>

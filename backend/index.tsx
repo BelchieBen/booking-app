@@ -6,6 +6,7 @@ const Course = require('./models/Course.tsx');
 const Announcement = require('./models/Announcement.tsx');
 const multer = require('multer');
 const path = require('path');
+const LearningObjective = require('./models/LearningObjective.tsx');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -76,7 +77,10 @@ app.get('/course/:id', (req, res) => {
 app.listen(PORT, () => {
     database.connect();
     User.sync();
-    Course.sync();
+    Course.sync()
+        .then(() => {
+            LearningObjective.sync();
+        });
     Announcement.sync();
     console.log(`Listening on port ${PORT}`);
 });

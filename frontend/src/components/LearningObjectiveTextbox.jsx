@@ -5,7 +5,13 @@ import CancelIcon from '@mui/icons-material/Cancel';
 export default function LearningObjectiveTextbox(props){
     return(
         <Stack direction="row" spacing={2} mt={2}>
-                <TextField sx={{width:'100%'}} value={props.value} label="New Objective" variant="outlined" size="small"/>
+                <TextField 
+                    sx={{width:'100%'}} 
+                    value={props.val} 
+                    label="New Objective" 
+                    variant="outlined" 
+                    size="small" 
+                    onChange={(e) => {props.updateLearningObjectives({id:props.aId, value:e.target.value})}}/>
                 <IconButton onClick={() => {props.handleRemove(props.loIndex)}}>    
                     <CancelIcon/>
                 </IconButton>

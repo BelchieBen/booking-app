@@ -15,7 +15,7 @@ export default function HomepageCard(props){
     const navigate = useNavigate();
     return(
         
-        <Card sx={{width:'400px', display: 'flex', flexDirection:'column', alignItems: 'center',justifyContent: 'flex-start'}}>
+        <Card sx={{width:'400px', height:'100%', display: 'flex', flexDirection:'column', alignItems: 'center',justifyContent: 'flex-start'}}>
             <CardMedia 
                 className="card img"
                 component="img"

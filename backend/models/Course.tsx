@@ -1,9 +1,13 @@
 const {Sequelize, Model, DataTypes} = require("sequelize");
 const database = require('../database.tsx');
+const LearningObjective = require('./LearningObjective.tsx');
 
 const sequelize = database.sequelize;
-
-class Course extends Model {};
+class Course extends Model {
+    static associate(models){
+        Course.hasMany(models.LearningObjective);
+    }
+};
 Course.init({
     id:{
         type:DataTypes.INTEGER,
@@ -43,5 +47,7 @@ Course.init({
     sequelize,
     modelName: 'Course',
 });
+
+Course.hasMany(LearningObjective);
 
 module.exports = Course;
