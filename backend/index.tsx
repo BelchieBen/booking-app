@@ -61,7 +61,18 @@ app.post("/course/new", (req, res) => {
         courseSpaces: req.body.spaces,
         courseThumbnail: req.body.thumbnail,
         selfDirectedLearning: req.body.directedLearning,
+
     })
+    .then((c) => {
+        console.log(c);
+        req.body.learningObjectives.map((reqObjective) => {
+            const obj = LearningObjective.create({
+                objective: reqObjective,
+                CourseId: c.id
+            })
+        });
+    });
+    
     res.json({message: "Success!"});
 })
 
@@ -71,7 +82,19 @@ app.get('/courses', (req, res) => {
 
 app.get('/course/:id', (req, res) => {
     console.log(req.params.id);
-    const course = Course.findByPk(req.params.id).then((course) => {res.json({course})});
+    let courseS;
+    const course = Course.findByPk(req.params.id)
+        .then((course) => {
+            courseS = course;
+            return LearningObjective.findAll({
+            where: {
+                CourseId: req.params.id,
+            }
+        })})
+        .then((objectives) => {
+            console.log(objectives);
+            res.json({objectives, courseS})
+        });
 })
 
 app.listen(PORT, () => {

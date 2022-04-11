@@ -16,22 +16,18 @@ import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 
 export default function CourseDetails(props){
-    const [shouldUpdate, setShouldUpdate] = useState(true);
     // These states are all used to handle the Learning Objective fields
     const [learningObjectives, setLearningObjectives] = useState([{id:0, value:''}]);
     let useRefArray = React.useRef([]);
     const [arrayDOMElements, setArrayDOMElements] = useState(useRefArray.current);
 
     const updateLearningObjectives = (lo) => {
-        console.log("Learning Objective Param ",lo);
-        let newLo = [{id:lo.id+1, value:lo.value}].concat(learningObjectives);
-        console.log("New Lo Array ",newLo);
-        setLearningObjectives(newLo);
+        let newLos = [lo].concat(learningObjectiveValue);
+        setLearningObjectiveValue(newLos);
     }
 
     // Use effect to watch the aray of learning objectives and update the UI when new fields are added
     React.useEffect(() => {
-        if(shouldUpdate){
             useRefArray.current = learningObjectives.map((a) => {
                 const i = learningObjectives.indexOf(a);
                 return(
@@ -45,13 +41,12 @@ export default function CourseDetails(props){
                         key={a.id}/>
                 );
             });
-            setShouldUpdate(false);
-        }
         setArrayDOMElements(useRefArray.current);
     }, [learningObjectives]);
 
     React.useEffect(() => {
         console.log("Learning Objectives: ",learningObjectives);
+        console.log("Learning Objectives Value: ",learningObjectiveValue);
     }, [learningObjectives])
     
     // Fields
@@ -65,6 +60,7 @@ export default function CourseDetails(props){
     const [courseThumbnailName, setCourseThumbnailName] = useState("notfound.svg");
     const [selfDirectedLearning, setSelfDirectedLearning] = useState();
     const [selfDirectedLearningName, setSelfDirectedLearningName] = useState("notfound.svg");
+    const [learningObjectiveValue, setLearningObjectiveValue] = useState([""]);
 
     const navigate = useNavigate();
 
@@ -91,6 +87,7 @@ export default function CourseDetails(props){
 
     // Function to handle the deletion of a learning objective field
     const handleRemove = (i) => {
+        //setShouldUpdate(true);
         console.log("Learning Objectives", learningObjectives);
         let arr = learningObjectives.slice();
         arr.splice(i, 1);
@@ -101,7 +98,6 @@ export default function CourseDetails(props){
 
     // Function to create new learning objective fields
     const addLine = () => {
-        setShouldUpdate(true);
         const ids = learningObjectives.map((lo) => lo.id);
         const unique = learningObjectives.length > 0 ? Math.max(...ids) : -1;
         let arr = [{id:unique + 1, value:'' }].concat(learningObjectives);
@@ -148,7 +144,8 @@ export default function CourseDetails(props){
                     spaces: courseSpaces,
                     state: courseState,
                     thumbnail:thumbnailName ,
-                    directedLearning: learningName
+                    directedLearning: learningName,
+                    learningObjectives: learningObjectiveValue,
                 })
                 .then(function(response) {
                     console.log(response);

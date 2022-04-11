@@ -19,7 +19,7 @@ export default function NewCourse(props){
         axios.get('/course/'+courseId)
             .then(res => {
                 console.log(res.data.course);
-                setCourse(res.data.course);
+                setCourse(res.data.courseS);
             })
     }
 
