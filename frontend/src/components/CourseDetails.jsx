@@ -11,6 +11,7 @@ import {
     Button
 } from '@mui/material';
 import LearningObjectiveTextbox from './LearningObjectiveTextbox';
+import MultipleChipSelect from './MultipleChipSelect';
 import FileUpload from './FileUpload';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
@@ -211,18 +212,7 @@ export default function CourseDetails(props){
 
                             <Stack direction="row" alignItems="flex-end" spacing={2} mt={2}>
                                 <Stack>
-                                    <FormControl>
-                                        <InputLabel id="content-icons-label">Content Icons</InputLabel>
-                                        <Select 
-                                            inputprops={{readOnly:props.isReadyOnly}}
-                                            labelId="content-icons-label"
-                                            label="Content Icons"
-                                            value={contentIcons}
-                                            onChange={(e) => {setContentIcons(e.target.value)}}
-                                            sx={{minWidth:200, width:'100%'}}>
-                                                <MenuItem value="Testing Filter">Icon</MenuItem>
-                                        </Select>
-                                    </FormControl>
+                                    <MultipleChipSelect />
                                 </Stack>
 
                                 <TextField 
@@ -274,7 +264,7 @@ export default function CourseDetails(props){
                 <Stack direction="row" spacing={2}>
                     <Button variant="contained" onClick={() => {saveCourse("Published")}} sx={{height:'fit-content'}}>Publish</Button>
                     <Button variant="contained" onClick={() => {saveCourse("Draft")}} sx={{height:'fit-content', minWidth:'max-content'}}>Save As Draft</Button>
-                    <Button variant="contained" sx={{height:'fit-content'}}>Discard</Button>
+                    <Button variant="contained" onClick={() => {navigate("/admin")}} sx={{height:'fit-content'}}>Discard</Button>
                 </Stack>
                 :
                 <Box></Box>
