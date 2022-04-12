@@ -13,6 +13,7 @@ import {
 import LearningObjectiveTextbox from './LearningObjectiveTextbox';
 import MultipleChipSelect from './MultipleChipSelect';
 import FileUpload from './FileUpload';
+import ContentIconPicker from './ContentIconPicker';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 
@@ -210,9 +211,10 @@ export default function CourseDetails(props){
                                     onChange={(e) => {handleNumberInput(e, setCourseLength)}}/>
                         </Stack>
 
-                            <Stack direction="row" alignItems="flex-end" spacing={2} mt={2}>
+                            <Stack direction="row" alignItems="flex-start" spacing={2} mt={2}>
                                 <Stack>
-                                    <MultipleChipSelect />
+                                    {/* <MultipleChipSelect /> */}
+                                    <ContentIconPicker />
                                 </Stack>
 
                                 <TextField 

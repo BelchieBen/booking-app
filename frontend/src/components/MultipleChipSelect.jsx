@@ -44,6 +44,7 @@ function getStyles(name, personName, theme) {
 export default function MultipleSelectChip() {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
+  const [personNameVal, setPersonNameVal] = React.useState([]);
   let useRefArray = React.useRef([]);
   const [chips, setChips] = React.useState(useRefArray.current);
 
@@ -52,7 +53,7 @@ export default function MultipleSelectChip() {
     useRefArray.current = personName.map((a) => {
         const i = personName.indexOf(a);
         return(
-            <Chip key={i} label={a} />
+            <Chip key={i} label={a} sx={{marginRight:1}}/>
         );
     });
     setChips(useRefArray.current);
@@ -70,12 +71,13 @@ export default function MultipleSelectChip() {
 
   return (
     <div>
-        <Box>
+        <Box sx={{marginBottom:2}}>
             {chips}
         </Box>
-      <FormControl sx={{ m: 1, width: 300 }}>
+      <FormControl>
         <InputLabel id="demo-multiple-chip-label">Content Icons</InputLabel>
         <Select
+        sx={{color: '#fff',minWidth:200, width:'100%'}}
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
           multiple
