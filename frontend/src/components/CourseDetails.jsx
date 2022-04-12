@@ -37,6 +37,7 @@ export default function CourseDetails(props){
                         handleRemove={() => {handleRemove(i)}} 
                         loIndex={i}
                         val={a.value}
+                        isReadyOnly={props.isReadyOnly}
                         updateLearningObjectives={updateLearningObjectives}
                         los={learningObjectives}
                         aId={a.id}

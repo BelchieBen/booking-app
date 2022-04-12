@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Stack, IconButton, TextField} from '@mui/material';
+import {Stack, IconButton, TextField, Box} from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 export default function LearningObjectiveTextbox(props){
@@ -23,10 +23,15 @@ export default function LearningObjectiveTextbox(props){
                     label="New Objective" 
                     variant="outlined" 
                     size="small" 
+                    inputProps={{readOnly:props.isReadyOnly}}
                     onChange={(e) => {setValue(e.target.value)}}/>
-                <IconButton onClick={() => {props.handleRemove(props.loIndex)}}>    
-                    <CancelIcon/>
-                </IconButton>
+                    {!props.isReadyOnly ?
+                        <IconButton onClick={() => {props.handleRemove(props.loIndex)}}>    
+                            <CancelIcon/>
+                        </IconButton>
+                    :
+                    <Box></Box>
+                    }
         </Stack>
     )
 }
