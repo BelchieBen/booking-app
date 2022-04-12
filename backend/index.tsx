@@ -66,7 +66,7 @@ app.post("/course/new", (req, res) => {
         req.body.learningObjectives.map((reqObjective) => {
             if(reqObjective !== ''){
                 const obj = LearningObjective.create({
-                    objective: reqObjective,
+                    objective: reqObjective.value,
                     CourseId: c.id
                 })
             };

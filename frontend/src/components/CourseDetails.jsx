@@ -21,11 +21,14 @@ export default function CourseDetails(props){
     let useRefArray = React.useRef([]);
     const [arrayDOMElements, setArrayDOMElements] = useState(useRefArray.current);
 
-    const updateLearningObjectives = (lo) => {
-        if(lo !== ""){
-            let newLos = [lo].concat(learningObjectiveValue);
-            setLearningObjectiveValue(newLos);
-        }
+    const updateLearningObjectiveObject = (objective) => {
+        let copyLearningObjectives = Object.assign([],learningObjectives);
+        copyLearningObjectives.map((o) => {
+            if(o.id === objective.id){
+                o.value = objective.value;
+            }
+        });
+        setLearningObjectives(copyLearningObjectives);
     }
 
     // Use effect to watch the aray of learning objectives and update the UI when new fields are added
@@ -38,7 +41,7 @@ export default function CourseDetails(props){
                         loIndex={i}
                         val={a.value}
                         isReadyOnly={props.isReadyOnly}
-                        updateLearningObjectives={updateLearningObjectives}
+                        updateLearningObjectiveObject={updateLearningObjectiveObject}
                         los={learningObjectives}
                         aId={a.id}
                         key={a.id}/>
@@ -58,7 +61,6 @@ export default function CourseDetails(props){
     const [courseThumbnailName, setCourseThumbnailName] = useState("notfound.svg");
     const [selfDirectedLearning, setSelfDirectedLearning] = useState();
     const [selfDirectedLearningName, setSelfDirectedLearningName] = useState("notfound.svg");
-    const [learningObjectiveValue, setLearningObjectiveValue] = useState([""]);
 
     const navigate = useNavigate();
 
@@ -98,8 +100,7 @@ export default function CourseDetails(props){
         console.log("Learning Objectives", learningObjectives);
         let arr = learningObjectives.slice();
         arr.splice(i, 1);
-        console.log("New array", arr);
-        console.log("The index of i",i)
+        console.log("The index of lo array is", i);
         setLearningObjectives(arr);
     }
 
@@ -152,7 +153,7 @@ export default function CourseDetails(props){
                     state: courseState,
                     thumbnail:thumbnailName ,
                     directedLearning: learningName,
-                    learningObjectives: learningObjectiveValue,
+                    learningObjectives: learningObjectives,
                 })
                 .then(function(response) {
                     console.log(response);
@@ -174,7 +175,7 @@ export default function CourseDetails(props){
                             variant="outlined" 
                             value={courseTitle} 
                             onChange={(e) => {setCourseTitle(e.target.value)}} 
-                            inputProps={{readOnly:props.isReadyOnly}}/>
+                            inputprops={{readOnly:props.isReadyOnly}}/>
                         <TextField 
                             label="Course Description" 
                             multiline 
@@ -183,14 +184,14 @@ export default function CourseDetails(props){
                             variant="outlined"
                             value={courseDescription} 
                             onChange={(e) => {setCourseDescription(e.target.value)}}
-                            inputProps={{readOnly:props.isReadyOnly}}/>
+                            inputprops={{readOnly:props.isReadyOnly}}/>
                     </Stack>
                         <Stack direction="row" alignItems="flex-end" spacing={2} mt={2}>
                             <Stack>
                                 <FormControl>
                                     <InputLabel id="target-audience-label">Target Audience</InputLabel>
                                     <Select 
-                                        inputProps={{readOnly:props.isReadyOnly}}
+                                        inputprops={{readOnly:props.isReadyOnly}}
                                         labelId="target-audience-label"
                                         label="Target Audience"
                                         value={targetAudience}
@@ -213,7 +214,7 @@ export default function CourseDetails(props){
                                     <FormControl>
                                         <InputLabel id="content-icons-label">Content Icons</InputLabel>
                                         <Select 
-                                            inputProps={{readOnly:props.isReadyOnly}}
+                                            inputprops={{readOnly:props.isReadyOnly}}
                                             labelId="content-icons-label"
                                             label="Content Icons"
                                             value={contentIcons}
@@ -227,7 +228,7 @@ export default function CourseDetails(props){
                                 <TextField 
                                     label="Available Spaces" 
                                     variant="outlined" 
-                                    InputProps={{ inputProps:{type:'number', min:0, max:100, readOnly:props.isReadyOnly } }}  
+                                    InputProps={{inputProps:{type:'number', min:0, max:100, readOnly:props.isReadyOnly } }}  
                                     value={courseSpaces} 
                                     onChange={(e) => {handleNumberInput(e, setCourseSpaces)}}/>
                             </Stack>
@@ -248,7 +249,7 @@ export default function CourseDetails(props){
                                 }} 
                                 variant="contained" 
                                 onClick={addLine}
-                                inputProps={{readOnly:props.isReadyOnly}}>
+                                inputprops={{readOnly:props.isReadyOnly}}>
                                     Add Line
                                 </Button>
                 </Stack>
