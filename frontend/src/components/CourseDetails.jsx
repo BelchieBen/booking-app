@@ -16,6 +16,7 @@ import FileUpload from './FileUpload';
 import ContentIconPicker from './ContentIconPicker';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
+import EditableTable from './EditableTable';
 
 export default function CourseDetails(props){
     // These states are all used to handle the Learning Objective fields
@@ -247,6 +248,12 @@ export default function CourseDetails(props){
                                     Add Line
                                 </Button>
                 </Stack>
+                <Typography variant="h6" mt={2}>Self Directed Learning</Typography>
+                    {!props.isReadyOnly ? 
+                    <EditableTable isReadyOnly={props.isReadyOnly}/>
+                    :
+                    <Box component="img" src={require("../../../backend/uploads/"+selfDirectedLearningName)} sx={{height:300, width:300}}/>
+                    }
             </Box>
             <Box>
                 <Stack>  
@@ -255,12 +262,6 @@ export default function CourseDetails(props){
                     <FileUpload setImage={(image, key) => {getImage(image, key)}} name="thumbnail"/>
                     :
                     <Box component="img" src={require("../../../backend/uploads/"+courseThumbnailName)} sx={{height:300, width:300}}/>
-                    }
-                    <Typography variant="h6" mt={2}>Self Directed Learning</Typography>
-                    {!props.isReadyOnly ? 
-                    <FileUpload setImage={(image, key) => {getImage(image, key)}} name="learning"/>
-                    :
-                    <Box component="img" src={require("../../../backend/uploads/"+selfDirectedLearningName)} sx={{height:300, width:300}}/>
                     }
                     
                 </Stack>
