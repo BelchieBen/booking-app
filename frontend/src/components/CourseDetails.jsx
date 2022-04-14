@@ -209,6 +209,13 @@ export default function CourseDetails(props){
                                     InputProps={{ inputProps:{type:'number', min:0, max:100, readOnly:props.isReadyOnly } }}  
                                     value={courseLength} 
                                     onChange={(e) => {handleNumberInput(e, setCourseLength)}}/>
+                                    
+                                <TextField 
+                                    label="Available Spaces" 
+                                    variant="outlined" 
+                                    InputProps={{inputProps:{type:'number', min:0, max:100, readOnly:props.isReadyOnly } }}  
+                                    value={courseSpaces} 
+                                    onChange={(e) => {handleNumberInput(e, setCourseSpaces)}}/>
                         </Stack>
 
                             <Stack direction="row" alignItems="flex-start" spacing={2} mt={2}>
@@ -217,12 +224,7 @@ export default function CourseDetails(props){
                                     <ContentIconPicker />
                                 </Stack>
 
-                                <TextField 
-                                    label="Available Spaces" 
-                                    variant="outlined" 
-                                    InputProps={{inputProps:{type:'number', min:0, max:100, readOnly:props.isReadyOnly } }}  
-                                    value={courseSpaces} 
-                                    onChange={(e) => {handleNumberInput(e, setCourseSpaces)}}/>
+                                
                             </Stack>
 
                         <Stack mt={2}>
