@@ -163,70 +163,58 @@ function ContentTypeEditInput(props) {
     );
 }
 
-// let idCounter = 0;
-// const createBlankRow = () => {
-//   idCounter += 1;
-//   return {id: idCounter, content:{contentType:"Click to add content", icon:IInfo}, title: {titleText:"Click to add title", href:""}, source:"Click to add source", duration:"Click to add duration"};
-// }
+let idCounter = 0;
+const createBlankRow = () => {
+  idCounter += 1;
+  return {id: idCounter, content:{contentType:"Click to add content", icon:IInfo}, title: {titleText:"Click to add title", href:""}, source:"Click to add source", duration:"Click to add duration"};
+}
 
-//  export default function EditableTable(props) {
-//    const [rows, setRows] = useState([
-//     createBlankRow()
-//    ]);
+ export default function EditableTable(props) {
+   const [rows, setRows] = useState([
+    createBlankRow()
+   ]);
 
-//   const [selectedCellParams, setSelectedCellParams] = React.useState(null);
+  const [selectedCellParams, setSelectedCellParams] = React.useState(null);
 
-//   const handleCellClick = React.useCallback((params) => {
-//     setSelectedCellParams(params);
-//   }, []);
+  const handleCellClick = React.useCallback((params) => {
+    setSelectedCellParams(params);
+  }, []);
 
-//   const handleCellEditStart = (params, event) => {
-//     event.defaultMuiPrevented = true;
-//   };
+  const handleCellEditStart = (params, event) => {
+    event.defaultMuiPrevented = true;
+  };
 
-//   const handleCellEditStop = (params, event) => {
-//     event.defaultMuiPrevented = true;
-//   };
+  const handleCellEditStop = (params, event) => {
+    event.defaultMuiPrevented = true;
+  };
 
-//   const addRow = () => {
-//     setRows((prevRows) => [...prevRows, createBlankRow()]);
-//   }
-//   return (
-//     <Box
-//       sx={{
-//         height: 400,
-//         width: 1, 
-//         display: 'flex',
-//         flexDirection: 'column',
-//         alignItems: 'flex-end'
-//       }}
-//     >
-//       <Button variant="contained" sx={{marginBottom:1}} onClick={addRow}>Add Row</Button>
-//       <DataGrid
-//         sx={{
-//           cursor: 'pointer',
-//           width: '100%',
-//         }}
-//         rows={rows}
-//         columns={columns}
-//         editMode="row"
-//         onCellClick={handleCellClick}
-//         onCellEditStart={handleCellEditStart}
-//         onCellEditStop={handleCellEditStop}
-//         components={{
-//           Toolbar: EditToolbar,
-//         }}
-//         componentsProps={{
-//           toolbar: {
-//             selectedCellParams,
-//             setSelectedCellParams,
-//           },
-//         }}
-//         experimentalFeatures={{ newEditingApi: true }}
-//       />
-//     </Box>
-//   );
-// }
+  const addRow = () => {
+    setRows((prevRows) => [...prevRows, createBlankRow()]);
+  }
+  return (
+    <Box
+      sx={{
+        height: 400,
+        width: 1, 
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end'
+      }}
+    >
+      <Button variant="contained" sx={{marginBottom:1}} onClick={addRow}>Add Row</Button>
+      <DataGrid
+        sx={{
+          cursor: 'pointer',
+          width: '100%',
+        }}
+        rows={rows}
+        columns={columns}
+        editMode="row"
+        experimentalFeatures={{ newEditingApi: true }}
+      />
+    </Box>
+  );
+}
 
 const renderContentTypeEditInput = (params) => {
   return <ContentTypeEditInput {...params} />
@@ -344,96 +332,95 @@ const renderContentTypeEditInput = (params) => {
 //   },
 // ];
 
-function EditToolbar(props) {
-  const apiRef = useGridApiContext();
-  const { selectedCellParams, setSelectedCellParams } = props;
+// function EditToolbar(props) {
+//   const apiRef = useGridApiContext();
+//   const { selectedCellParams, setSelectedCellParams } = props;
 
-  const handleClick = async () => {
-    if (!selectedCellParams) {
-      return;
-    }
-    const { id, field, cellMode } = selectedCellParams;
-    if (cellMode === 'edit') {
-      apiRef.current.stopCellEditMode({ id, field });
-      setSelectedCellParams({ ...selectedCellParams, cellMode: 'view' });
-    } else {
-      apiRef.current.startCellEditMode({ id, field });
-      setSelectedCellParams({ ...selectedCellParams, cellMode: 'edit' });
-    }
-  };
+//   const handleClick = async () => {
+//     if (!selectedCellParams) {
+//       return;
+//     }
+//     const { id, field, cellMode } = selectedCellParams;
+//     if (cellMode === 'edit') {
+//       apiRef.current.stopCellEditMode({ id, field });
+//       setSelectedCellParams({ ...selectedCellParams, cellMode: 'view' });
+//     } else {
+//       apiRef.current.startCellEditMode({ id, field });
+//       setSelectedCellParams({ ...selectedCellParams, cellMode: 'edit' });
+//     }
+//   };
 
-  const handleMouseDown = (event) => {
-    // Keep the focus in the cell
-    event.preventDefault();
-  };
+//   const handleMouseDown = (event) => {
+//     // Keep the focus in the cell
+//     event.preventDefault();
+//   };
 
-  return (
-    <Box
-      sx={{
-        justifyContent: 'center',
-        display: 'flex',
-        borderBottom: 1,
-        borderColor: 'divider',
-      }}
-    >
-      <Button
-        onClick={handleClick}
-        onMouseDown={handleMouseDown}
-        disabled={!selectedCellParams}
-        color="primary"
-      >
-        {selectedCellParams?.cellMode === 'edit' ? 'Save' : 'Edit'}
-      </Button>
-    </Box>
-  );
-}
+//   return (
+//     <Box
+//       sx={{
+//         justifyContent: 'center',
+//         display: 'flex',
+//         borderBottom: 1,
+//         borderColor: 'divider',
+//       }}
+//     >
+//       <Button
+//         onClick={handleClick}
+//         onMouseDown={handleMouseDown}
+//         disabled={!selectedCellParams}
+//         color="primary"
+//       >
+//         {selectedCellParams?.cellMode === 'edit' ? 'Save' : 'Edit'}
+//       </Button>
+//     </Box>
+//   );
+// }
 
-EditToolbar.propTypes = {
-  selectedCellParams: PropTypes.any,
-  setSelectedCellParams: PropTypes.func.isRequired,
-};
+// EditToolbar.propTypes = {
+//   selectedCellParams: PropTypes.any,
+//   setSelectedCellParams: PropTypes.func.isRequired,
+// };
 
-export default function StartEditButtonGrid() {
-  const [selectedCellParams, setSelectedCellParams] = React.useState(null);
+// export default function StartEditButtonGrid() {
+//   const [selectedCellParams, setSelectedCellParams] = React.useState(null);
 
-  const handleCellClick = React.useCallback((params) => {
-    setSelectedCellParams(params);
-  }, []);
+//   const handleCellClick = React.useCallback((params) => {
+//     setSelectedCellParams(params);
+//   }, []);
 
-  const handleCellEditStart = (params, event) => {
-    event.defaultMuiPrevented = true;
-  };
+//   const handleCellEditStart = (params, event) => {
+//     event.defaultMuiPrevented = true;
+//   };
 
-  const handleCellEditStop = (params, event) => {
-    event.defaultMuiPrevented = true;
-  };
+//   const handleCellEditStop = (params, event) => {
+//     event.defaultMuiPrevented = true;
+//   };
 
-  return (
-    <div style={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        onCellClick={handleCellClick}
-        onCellEditStart={handleCellEditStart}
-        onCellEditStop={handleCellEditStop}
-        components={{
-          Toolbar: EditToolbar,
-        }}
-        componentsProps={{
-          toolbar: {
-            selectedCellParams,
-            setSelectedCellParams,
-          },
-        }}
-        experimentalFeatures={{ newEditingApi: true }}
-      />
-    </div>
-  );
-}
+//   return (
+//     <div style={{ height: 400, width: '100%' }}>
+//       <DataGrid
+//         rows={rows}
+//         columns={columns}
+//         onCellClick={handleCellClick}
+//         onCellEditStart={handleCellEditStart}
+//         onCellEditStop={handleCellEditStop}
+//         components={{
+//           Toolbar: EditToolbar,
+//         }}
+//         componentsProps={{
+//           toolbar: {
+//             selectedCellParams,
+//             setSelectedCellParams,
+//           },
+//         }}
+//         experimentalFeatures={{ newEditingApi: true }}
+//       />
+//     </div>
+//   );
+// }
 
 function ToggleEditBtn(props){
   const apiRef = useGridApiContext();
-  const { selectedCellParams, setSelectedCellParams } = props;
 
   const handleClick = async () => {
     if (props.cellMode === 'edit') {
