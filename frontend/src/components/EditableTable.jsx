@@ -1,29 +1,14 @@
-// import MUIDataTable from "mui-datatables";
-
-// export default function EditableTable(props) {
-//     const columns = ["Name", "Company", "City", "State"];
-
-//     const data = [
-//     ["Joe James", "Test Corp", "Yonkers", "NY"],
-//     ["John Walsh", "Test Corp", "Hartford", "CT"],
-//     ["Bob Herm", "Test Corp", "Tampa", "FL"],
-//     ["James Houston", "Test Corp", "Dallas", "TX"],
-//     ];
-
-//     const options = {
-//     filterType: 'checkbox',
-//     };
-//     return(
-//         <MUIDataTable
-//         title={"Employee List"}
-//         data={data}
-//         columns={columns}
-//         options={options} />
-//     )
-// }
+import Article from '../utils/images/content-images/Article.svg'
+import EBook from '../utils/images/content-images/EBook.svg'
+import ELearning from '../utils/images/content-images/ELearning.svg'
+import FaceToFace from '../utils/images/content-images/FaceToFace.svg'
+import Online from '../utils/images/content-images/Online.svg'
+import Podcast from '../utils/images/content-images/Podcast.svg'
+import TopTips from '../utils/images/content-images/TopTips.svg'
+import Video from '../utils/images/content-images/Video.svg'
 
 import * as React from 'react';
-import Box from '@mui/material/Box';
+import {Box, Stack} from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 export default function EditableTable(props) {
@@ -46,29 +31,35 @@ export default function EditableTable(props) {
 
 const columns = [
     { 
-        field: 'name', 
-        headerName: 'Name',
+        field: 'content', 
+        headerName: 'Content',
+        renderCell: (params) => {
+          return(
+            <Stack direction="row" sx={{alignItems:"center"}}>
+              <Box component="img" sx={{height:30, width:30, marginRight:2}} src={params.value.icon} />
+              {params.value.contentType}
+            </Stack>
+          )
+        },
         flex:1, 
-        editable: true 
+        editable: true,
+        sortComparator: (v1, v2) => v1.contentType.localeCompare(v2.contentType)
     },
     { 
-        field: 'age', 
-        headerName: 'Age', 
-        type: 'number', 
+        field: 'title', 
+        headerName: 'Title', 
         flex:1, 
         editable: true 
     },
     {
-        field: 'dateCreated',
-        headerName: 'Date Created',
-        type: 'date',
+        field: 'source',
+        headerName: 'Source',
         flex:1, 
         editable: true,
     },
     {
-        field: 'lastLogin',
-        headerName: 'Last Login',
-        type: 'dateTime',
+        field: 'duration',
+        headerName: 'Duration',
         flex:1, 
         editable: true,
     },
@@ -77,37 +68,52 @@ const columns = [
 const rows = [
   {
     id: 1,
-    name: "Test name",
-    age: 25,
-    dateCreated: Date.now(),
-    lastLogin: Date.now(),
+    content: { 
+      contentType:"Article",
+      icon: Article
+    },
+    title: "The GROW Model of Coaching and Mentoring",
+    source: "Mind Tools",
+    duration: "9 mins",
   },
   {
     id: 2,
-    name: "Test name",
-    age: 36,
-    dateCreated: Date.now(),
-    lastLogin: Date.now(),
+    content: { 
+      contentType:"Article",
+      icon: Article
+    },
+    title: "The 5 Essentials to Effective Coaching",
+    source: "Entrepreneur.com",
+    duration: "5 mins",
   },
   {
     id: 3,
-    name: "Test name",
-    age: 19,
-    dateCreated: Date.now(),
-    lastLogin: Date.now(),
+    content: { 
+      contentType:"Article",
+      icon: Article
+    },
+    title: "The Key to Effective Coaching",
+    source: "Forbes",
+    duration: "7 mins",
   },
   {
     id: 4,
-    name: "Test name",
-    age: 28,
-    dateCreated: Date.now(),
-    lastLogin: Date.now(),
+    content: { 
+      contentType:"Podcast",
+      icon: Podcast
+    },
+    title: "Coaching for Leaders Podcast",
+    source: "Dave Stachowiak",
+    duration: "Various",
   },
   {
     id: 5,
-    name: "Test name",
-    age: 23,
-    dateCreated: Date.now(),
-    lastLogin: Date.now(),
+    content: { 
+      contentType:"Podcast",
+      icon: Podcast
+    },
+    title: "Accelerating Growth through Coaching",
+    source: "How to be Awesome at Your Job",
+    duration: "42 mins",
   },
 ];
