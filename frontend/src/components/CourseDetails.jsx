@@ -8,7 +8,8 @@ import {
     Select, 
     MenuItem, 
     FormControl, 
-    Button
+    Button,
+    ButtonGroup
 } from '@mui/material';
 import LearningObjectiveTextbox from './LearningObjectiveTextbox';
 import MultipleChipSelect from './MultipleChipSelect';
@@ -17,6 +18,8 @@ import ContentIconPicker from './ContentIconPicker';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import EditableTable from './EditableTable';
+import DisplayTable from './DisplayTable';
+import {columns, rows} from './TestTableData';
 
 export default function CourseDetails(props){
     // These states are all used to handle the Learning Objective fields
@@ -64,6 +67,8 @@ export default function CourseDetails(props){
     const [courseThumbnailName, setCourseThumbnailName] = useState("notfound.svg");
     const [selfDirectedLearning, setSelfDirectedLearning] = useState();
     const [selfDirectedLearningName, setSelfDirectedLearningName] = useState("notfound.svg");
+
+    const [displayTable, setDisplayTable] = useState(false);
 
     const navigate = useNavigate();
 
@@ -249,10 +254,19 @@ export default function CourseDetails(props){
                                 </Button>
                 </Stack>
                 <Typography variant="h6" mt={2}>Self Directed Learning</Typography>
-                    {!props.isReadyOnly ? 
+                <ButtonGroup variant="text">
+                    <Button onClick={() =>{setDisplayTable(true)}}>Inline editing</Button>
+                    <Button onClick={() =>{setDisplayTable(false)}}>Form Editing</Button>
+                </ButtonGroup>
+                    {/* {!props.isReadyOnly ? 
                     <EditableTable isReadyOnly={props.isReadyOnly}/>
                     :
                     <Box component="img" src={require("../../../backend/uploads/"+selfDirectedLearningName)} sx={{height:300, width:300}}/>
+                    } */}
+                    {displayTable ?
+                    <EditableTable isReadyOnly={props.isReadyOnly}/>
+                    :
+                    <DisplayTable columns={columns} rows={rows} isReadyOnly={props.isReadyOnly} />
                     }
             </Box>
             <Box>

@@ -71,3 +71,7 @@ body{
 .chose-file{
   color: #BDBDBD;
 }
+
+#content{
+  display: flex;
+}

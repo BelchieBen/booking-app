@@ -15,7 +15,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { DataGrid, useGridApiContext } from '@mui/x-data-grid';
+import { DataGrid, useGridApiContext, useGridApiRef } from '@mui/x-data-grid';
 
 // Test Data
 const contentTypes = [
@@ -170,23 +170,22 @@ const createBlankRow = () => {
 }
 
  export default function EditableTable(props) {
-   const [rows, setRows] = useState([
+  const apiRef = useGridApiRef();
+  const [rows, setRows] = useState([
     createBlankRow()
-   ]);
+  ]);
 
-  const [selectedCellParams, setSelectedCellParams] = React.useState(null);
+  const handleOnRowCommit = async (id) => {
+    console.log("I have been called");
+    const model = apiRef.current.getEditRowsModel();
+    const newRow = model[id]; // The data that will be commited
+    const content = newRow.content.value; // The new value entered
+    const title = newRow.title.value;
+    const duration = newRow.duration.value;
+    const source = newRow.source.value;
 
-  const handleCellClick = React.useCallback((params) => {
-    setSelectedCellParams(params);
-  }, []);
-
-  const handleCellEditStart = (params, event) => {
-    event.defaultMuiPrevented = true;
-  };
-
-  const handleCellEditStop = (params, event) => {
-    event.defaultMuiPrevented = true;
-  };
+    console.log("THE NEW ROW! ", newRow);
+  }
 
   const addRow = () => {
     setRows((prevRows) => [...prevRows, createBlankRow()]);
@@ -203,12 +202,14 @@ const createBlankRow = () => {
     >
       <Button variant="contained" sx={{marginBottom:1}} onClick={addRow}>Add Row</Button>
       <DataGrid
+        apiRef={apiRef}
         sx={{
           cursor: 'pointer',
           width: '100%',
         }}
         rows={rows}
         columns={columns}
+        onRowEditCommit={handleOnRowCommit}
         editMode="row"
         experimentalFeatures={{ newEditingApi: true }}
       />
@@ -419,13 +420,15 @@ const renderContentTypeEditInput = (params) => {
 //   );
 // }
 
-function ToggleEditBtn(props){
+function ToggleEditRenderCell(props){
   const apiRef = useGridApiContext();
 
   const handleClick = async () => {
     if (props.cellMode === 'edit') {
       console.log("ID!!!!", props);
+      apiRef.current.updateRows([{id:props.id, content:props.row.content,title:props.row.title, duration:props.row.duration, source:props.row.source}]);
       apiRef.current.stopRowEditMode({id:props.id});
+      
     } else {
       console.log(props.id);
       apiRef.current.startRowEditMode({id:props.id});
@@ -484,8 +487,8 @@ const columns = [
       headerName: 'Edit',
       flex:0.15,
       editable: true,
-      renderCell: ToggleEditBtn,
-      renderEditCell: ToggleEditBtn
+      renderCell: ToggleEditRenderCell,
+      renderEditCell: ToggleEditRenderCell
   },
 ];
 
